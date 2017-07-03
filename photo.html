@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<ul>
+</ul>
+  </body>
+  <script type="text/javascript" src='http://libs.baidu.com/jquery/1.9.1/jquery.js'>
+
+  </script>
+  <script type="text/javascript">
+    $.getJSON('http://iu.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-103&message_cursor=-1&am_longitude=110&am_latitude=120&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1499052491&count=5&min_time=1499052368&screen_width=1450&do00le_col_mode=0&iid=3216590132&device_id=32613520945&ac=wifi&channel=360&aid=7&app_name=joke_essay&version_code=612&version_name=6.1.2&device_platform=android&ssmix=a&device_type=sansung&device_brand=xiaomi&os_api=28&os_version=6.10.1&uuid=326135942187625&openudid=3dg6s95rhg2a3dg5&manifest_version_code=612&resolution=1450*2800&dpi=620&update_version_code=6120',function(data){
+        content=data.data.data;
+        console.log(content);
+        $.each(content,function(idx,obj){
+          if(obj.type==5){
+            return true;
+          }
+          image='';
+          if(obj.group.large_image){
+            image='<image src='+obj.group.large_image.url_list[0].url+'>';
+            /*$.each(obj.group.large_image.url_list,function(idx1,obj1){
+              if(obj1.url){
+                image+='<image src='+obj1.url+'>';
+              }else{
+                return true;
+              }
+            });*/
+          }
+          if(obj.group.large_image_list){
+            $.each(obj.group.large_image_list,function(idx1,obj1){
+              image+='<img src='+obj1.url+'>';
+            })
+          }
+          video='';
+          if(obj.group.gifvideo){
+            video='<video src='+obj.group.gifvideo.mp4_url+' width="320" height="200" controls preload></video>';
+          }
+          $('ul').append('<li>'+'<b>'+obj.group.category_name+'</b>'+'&nbsp'+obj.group.content+'<br/>'+image+'<br/>'+video+'</li>');
+        })
+    });
+    $(document).ready(function(){
+    $("ul").on('click',"li img",function(){
+      console.log($(this).width());
+      if($(this).width()>$(document.body).width()*0.8){
+        $(this).width('');
+      }else{
+        $(this).width('100%');
+      }
+    });
+  });
+  </script>
+</html>
